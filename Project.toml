@@ -1,0 +1,11 @@
+name = "PKGNAME"
+uuid = "da9e779f-cf6d-4bf6-baf7-0ed062534939"
+authors = ["Grant Bruer gbruer15@gmail.com and contributors"]
+version = "1.0.0-DEV"
+
+[deps]
+PackageExtensionCompat = "65ce6f38-6b18-4e1d-a461-8949797d7930"
+
+[compat]
+PackageExtensionCompat = "1"
+julia = "1.8"

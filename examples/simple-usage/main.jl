@@ -1,0 +1,3 @@
+using PKGNAME
+
+println("hello")

@@ -1,0 +1,187 @@
+name: CI
+on:
+  workflow_dispatch:
+    inputs:
+      base_branch:
+        description: 'Branch to modify and target for pull request'
+        default: 'main'
+        required: false
+        type: string
+  pull_request:
+    types: [ready_for_review, synchronize]
+  push:
+    branches:
+    - main
+
+concurrency:
+  # Skip intermediate builds: always.
+  # Cancel intermediate builds: only if it is a pull request build.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
+
+jobs:
+  test:
+    name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    permissions: # needed to allow julia-actions/cache to proactively delete old caches that it has created
+      actions: write
+      contents: write
+      pull-requests: write
+    strategy:
+      fail-fast: false
+      matrix:
+        version:
+          - '1.9'
+          - '1.10'
+        os:
+          - ubuntu-latest
+        arch:
+          - x64
+    steps:
+      - name: Add GLMakie/XFVB dependencies
+        run: sudo apt-get update && sudo apt-get install -y xorg-dev mesa-utils xvfb libgl1 freeglut3-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev libcairo2-dev libfreetype6-dev libffi-dev libjpeg-dev libpng-dev libz-dev
+      - run: |
+          JOB_NAME="${{ join(matrix.*, '-') }}"
+          echo $JOB_NAME
+          echo "JOB_NAME=$JOB_NAME" >> $GITHUB_ENV
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: ${{ matrix.version }}
+          arch: ${{ matrix.arch }}
+      - uses: julia-actions/cache@v2
+      - uses: julia-actions/julia-buildpkg@v1
+      - uses: julia-actions/julia-runtest@v1
+        with:
+          prefix: xvfb-run -a
+      - name: Process coverage
+        if: success() || failure()
+        run: make coverage-lcov.info
+      - name: Upload coverage results
+        uses: actions/upload-artifact@v4
+        if: success() || failure()
+        with:
+          name: coverage-${{ env.JOB_NAME }}.info
+          path: "coverage-lcov.info"
+  formatter:
+    name: Run JuliaFormatter and create pull request
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' || !github.event.pull_request.isDraft}}
+    steps:
+    - name: Set inputs for push or pull request event
+      if: github.event_name != 'workflow_dispatch'
+      run: |
+        echo "base_branch=${{ github.head_ref || github.ref_name }}" >> $GITHUB_ENV
+        echo 'formatter_branch=auto-formatter/${{ github.head_ref || github.ref_name }}' >> $GITHUB_ENV
+    - name: Set inputs for workflow dispatch event
+      if: github.event_name == 'workflow_dispatch'
+      run: |
+        echo 'base_branch=${{ inputs.base_branch }}' >> $GITHUB_ENV
+        echo 'formatter_branch=auto-formatter/${{ inputs.base_branch }}' >> $GITHUB_ENV
+    - name: Print variables
+      run: |
+        echo       event type: ${{ github.event_name }}
+        echo      base branch: ${{ env.base_branch }}
+        echo formatter branch: ${{ env.formatter_branch }}
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        ref: ${{ env.base_branch }}
+    - name: Set up Github CLI
+      run: (command -V gh || sudo apt-get -y install gh) && gh --version
+    - uses: julia-actions/setup-julia@v2
+      with:
+        version: '1'
+    - name: Checkout branch
+      run: git checkout -B "${{ env.formatter_branch }}"
+    - uses: julia-actions/cache@v2
+    - name: Install JuliaFormatter and format
+      run: make autoformat
+    - name: Create pull request with changes
+      run: |
+        if git diff --quiet ; then
+          echo "No formatting changes were made"
+          if q=`gh pr view --json state --template '{{.state}}'` && test "$q" = "OPEN"; then
+            gh pr close "${{ env.formatter_branch }}" -d
+          fi
+        else
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git add -u
+          git commit -m "$base_branch - Automatic JuliaFormatter.jl"
+          git push -f -u origin "${{ env.formatter_branch }}"
+          if q=`gh pr view --json state --template '{{.state}}'` && test "$q" != "MERGED"; then
+            if test "$q" = "OPEN"; then
+              gh pr view
+            else
+              gh pr reopen "${{ env.formatter_branch }}"
+            fi
+          else
+            gh pr create -B "${{ env.base_branch }}" --fill
+          fi
+          exit 1
+        fi
+      env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  docs-build:
+    name: Build documentation
+    runs-on: ubuntu-latest
+    permissions: write-all
+    if: ${{ !cancelled() }}
+    needs: test
+    steps:
+      - name: Add GLMakie/XFVB dependencies
+        run: sudo apt-get update && sudo apt-get install -y xorg-dev mesa-utils xvfb libgl1 freeglut3-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev libcairo2-dev libfreetype6-dev libffi-dev libjpeg-dev libpng-dev libz-dev
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: '1'
+      - uses: julia-actions/cache@v2
+      - name: Setup LCOV
+        run: (command -V genhtml || sudo apt-get -y install lcov) && genhtml --version
+        continue-on-error: true
+      - name: Configure doc environment
+        run: make docsetup
+      - uses: julia-actions/julia-buildpkg@v1
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          path: coverage
+      - name: Display structure of downloaded files
+        run: ls -R
+      - name: Combine LCOV files and generate coverage html
+        continue-on-error: true
+        run: |
+          lcov $(find coverage -name 'coverage-lcov.info' -printf '-a %p ') -o coverage-lcov.info
+          test -f coverage-lcov.info && make coverage-lcov -o '*/*.cov'
+      - name: Display structure of whatever just happened
+        run: ls -R
+      - name: Build docs
+        run: make DOC_PREFIX='xvfb-run -a' doc -o '*/*.cov'
+      - name: Display structure of docs
+        run: ls -R docs
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload report Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./docs/build"
+  docs-deploy:
+    name: Deploy documentation
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    permissions: write-all
+    needs: docs-build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        continue-on-error: true
