@@ -9,7 +9,7 @@ help:
 	@echo "  docsetup       Set up the documentation environment"
 	@echo "  clean_coverage Clean up coverage-related files"
 	@echo "  coverage-lcov  Generate HTML coverage report"
-	@echo "  autoformat     Format Julia code in src, test, and docs directories"
+	@echo "  autoformat     Format Julia code in src, test, docs, ext, and examples directories"
 	@echo "  dev-repl       Start an interactive Julia REPL for development"
 	@echo "  help           Display this help message"
 	@echo
@@ -25,7 +25,7 @@ test:
 .PHONY: autoformat
 
 autoformat:
-	julia -e 'include("ci_scripts/ensure_import.jl"); @ensure_import JuliaFormatter; JuliaFormatter.format(["src", "test", "docs", "examples"])'
+	julia -e 'include("ci_scripts/ensure_import.jl"); @ensure_import JuliaFormatter; JuliaFormatter.format(["src", "test", "docs", "ext", "examples"])'
 
 .PHONY: doc doctest docview docsetup
 
@@ -48,7 +48,7 @@ docs/Manifest.toml: docs/Project.toml Project.toml
 	julia --project=docs -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
 
 coverage-lcov.info: */*.cov
-	julia ci_scripts/process_coverage.jl "$@" ./src ./test ./docs ./examples
+	julia ci_scripts/process_coverage.jl "$@" ./src ./test ./docs ./examples ./ext
 
 coverage-lcov: coverage-lcov.info
 	rm -rf $@
