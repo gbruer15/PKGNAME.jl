@@ -68,7 +68,7 @@ jobs:
         uses: dorny/test-reporter@v1
         if: success() || failure()
         with:
-          name: Test results
+          name: Test results ${{ env.JOB_NAME }}
           path: report.xml
           reporter: java-junit
       - name: Process coverage
