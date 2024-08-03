@@ -9,12 +9,7 @@ using Documenter
     Aqua.test_ambiguities(PKGNAME)
 end
 
-DocMeta.setdocmeta!(
-    PKGNAME,
-    :DocTestSetup,
-    :(using PKGNAME, Test);
-    recursive=true,
-)
+DocMeta.setdocmeta!(PKGNAME, :DocTestSetup, :(using PKGNAME, Test); recursive=true)
 doctest(PKGNAME; manual=false)
 
 examples_dir = joinpath(@__DIR__, "..", "examples")
