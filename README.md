@@ -1,9 +1,8 @@
 # PKGNAME
 
-[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://gbruer15.github.io/PKGNAME.jl/stable/)
-[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://gbruer15.github.io/PKGNAME.jl/dev/)
-[![Build Status](https://github.gatech.edu/gbruer15/PKGNAME.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.gatech.edu/gbruer15/PKGNAME.jl/actions/workflows/CI.yml?query=branch%3Amain)
-[![Aqua](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.gatech.edu/JuliaTesting/Aqua.jl)
+[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://gbruer15.github.io/PKGNAME.jl)
+[![Build Status](https://github.com/gbruer15/PKGNAME.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/gbruer15/PKGNAME.jl/actions/workflows/CI.yml?query=branch%3Amain)
+[![Aqua](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl)
 
 
 ## Repository Structure[^1]
@@ -95,7 +94,7 @@ Starts an interactive Julia REPL with the project environment, Revise, and TestE
 
 ## GitHub Workflows[^1]
 
-This repository uses GitHub Actions for continuous integration, compatibility checks, and automated tagging. The workflows are defined in [./.github/workflows]. Here's a brief overview of each workflow:
+This repository uses GitHub Actions for continuous integration, compatibility checks, and automated tagging. The workflows are defined in [./.github/workflows](./.github/workflows). Here's a brief overview of each workflow:
 
 ### CI
 
@@ -107,7 +106,7 @@ The main continuous integration workflow that:
 
 Triggers: Pull requests, pushes to main, and manual dispatch
 
-### Untested: CompatHelper
+### CompatHelper
 
 Automatically updates the `[compat]` entries in your `Project.toml` file:
 - Checks for new versions of dependencies
