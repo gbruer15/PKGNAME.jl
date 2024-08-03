@@ -63,6 +63,13 @@ jobs:
       - uses: julia-actions/julia-runtest@v1
         with:
           prefix: xvfb-run -a
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: Test results
+          path: report.xml
+          reporter: java-junit
       - name: Process coverage
         if: success() || failure()
         run: make coverage-lcov.info
