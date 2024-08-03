@@ -34,7 +34,7 @@ jobs:
         version:
           - '1.9'
           - '1.10'
-          - 'lts'
+          - '1'
         os:
           - ubuntu-latest
         arch:
