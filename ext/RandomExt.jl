@@ -1,6 +1,6 @@
 module RandomExt
 
-import PKGNAME
+using PKGNAME: PKGNAME
 using Random
 
 end
