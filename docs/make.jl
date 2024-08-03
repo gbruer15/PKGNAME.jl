@@ -87,12 +87,7 @@ for (ex, pth) in examples
     end
 end
 
-DocMeta.setdocmeta!(
-    PKGNAME,
-    :DocTestSetup,
-    :(using PKGNAME, Test);
-    recursive=true,
-)
+DocMeta.setdocmeta!(PKGNAME, :DocTestSetup, :(using PKGNAME, Test); recursive=true)
 makedocs(;
     modules=[PKGNAME],
     authors="Grant Bruer gbruer15@gmail.com and contributors",
