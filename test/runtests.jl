@@ -34,13 +34,6 @@ ts = @testset ReportingTestSet "" begin
     end
 end
 
-function TestReports.to_xml(v::TestReports.Error)
-    message, type, ntest = TestReports.get_error_info(v)
-    x_error = TestReports.error_xml(message, type, v.backtrace)
-    x_testcase = TestReports.testcase_xml(v, [x_error])
-    return x_testcase, ntest, 0, 1  # Increment number of errors by 1
-end
-
 outputfilename = joinpath(@__DIR__, "..", "report.xml")
 open(outputfilename, "w") do fh
     print(fh, report(ts))

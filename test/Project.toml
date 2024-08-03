@@ -8,3 +8,4 @@ TestReports = "dcd651b4-b50a-5b6b-8f22-87e9f253a252"
 [compat]
 Aqua = "0.8"
 Documenter = "1.1"
+TestReports = "1.1"
