@@ -55,11 +55,14 @@ coverage-lcov: coverage-lcov.info
 	mkdir -p $@
 	genhtml -o $@ $<
 
-.PHONY: clean_coverage
+.PHONY: clean_coverage clean_testreport
 
 clean_coverage:
 	rm -f coverage-lcov.info
 	julia -e 'include("ci_scripts/ensure_import.jl"); @ensure_import CoverageTools; CoverageTools.clean_folder(".")'
+
+clean_testreport:
+	rm -f report.xml
 
 .PHONY: dev-repl
 
