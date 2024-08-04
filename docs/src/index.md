@@ -19,6 +19,5 @@ Modules = [PKGNAME]
 # Extensions
 
 ```@autodocs
-using Random
 Modules = [PKGNAME.RandomExt]
 ```

@@ -1,6 +1,7 @@
 using Pkg: Pkg
 using PKGNAME
 using Documenter
+using Random # Loads PKGNAME Random extension.
 
 using Literate
 
