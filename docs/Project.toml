@@ -3,6 +3,8 @@ Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 PKGNAME = "da9e779f-cf6d-4bf6-baf7-0ed062534939"
 Literate = "98b081ad-f1c9-55d3-8b20-4c87d4299306"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 
 [compat]
 Literate = "2.18"
+Random = "1.7"
