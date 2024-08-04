@@ -11,8 +11,9 @@ ts = @testset ReportingTestSet "" begin
         Aqua.test_ambiguities(PKGNAME)
     end
 
-    DocMeta.setdocmeta!(PKGNAME, :DocTestSetup, :(using PKGNAME, Test); recursive=true)
-    doctest(PKGNAME; manual=false)
+    DocMeta.setdocmeta!(PKGNAME, :DocTestSetup, :(using PKGNAME, Test); recursive=false)
+    DocMeta.setdocmeta!(PKGNAME.RandomExt, :DocTestSetup, :(using PKGNAME, Random, Test); recursive=true)
+    doctest(PKGNAME; manual=true)
 
     examples_dir = joinpath(@__DIR__, "..", "examples")
     for example in readdir(examples_dir)
