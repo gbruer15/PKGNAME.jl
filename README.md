@@ -67,10 +67,6 @@ Automatically formats Julia code in the `src`, `test`, `docs`, `ext`, and `examp
 
 Generates project documentation. It depends on the `docsetup` target and attempts to generate coverage HTML before building the docs.
 
-#### `make doctest`
-
-Runs doctests for the project documentation.
-
 #### `make docsetup`
 
 Sets up the documentation environment by developing the current package and instantiating its dependencies.

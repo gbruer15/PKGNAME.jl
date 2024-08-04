@@ -25,8 +25,10 @@ ts = @testset ReportingTestSet "" begin
                 Pkg.develop(; path=joinpath(@__DIR__, ".."))
                 Pkg.instantiate()
             end
+            script_path = joinpath(example_path, "main.jl")
             try
-                include(joinpath(example_path, "main.jl"))
+                include(script_path)
+                println("Included script_path")
             finally
                 Pkg.activate(orig_project)
             end

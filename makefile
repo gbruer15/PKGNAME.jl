@@ -5,7 +5,6 @@ help:
 	@echo "  test           Run project tests with coverage"
 	@echo "  doc            Generate project documentation"
 	@echo "  docview        Launch a local server to show the documentation"
-	@echo "  doctest        Run doctests for the documentation"
 	@echo "  docsetup       Set up the documentation environment"
 	@echo "  clean_coverage Clean up coverage-related files"
 	@echo "  coverage-lcov  Generate HTML coverage report"
@@ -27,17 +26,14 @@ test:
 autoformat:
 	julia -e 'include("ci_scripts/ensure_import.jl"); @ensure_import JuliaFormatter; JuliaFormatter.format(["src", "test", "docs", "ext", "examples"])'
 
-.PHONY: doc doctest docview docsetup
+.PHONY: doc docview docsetup
 
 doc: docsetup
 	rm -rf docs/stage docs/build
+	$(DOC_PREFIX) julia --project=docs  --code-coverage=@ --code-coverage=coverage-lcov.info docs/make.jl
 	-touch src/dummy.cov -d "19730101" && $(DOC_PREFIX) $(MAKE) coverage-lcov \
-	&& mkdir -p docs/stage/coverage && cp -r coverage-lcov docs/stage/coverage/site
+	&& mkdir -p docs/build/coverage && cp -r coverage-lcov docs/build/coverage/site
 	rm -f src/dummy.cov
-	$(DOC_PREFIX) julia --project=docs docs/make.jl
-
-doctest:
-	julia --project=docs docs/doctest.jl
 
 docview:
 	julia -e 'include("ci_scripts/ensure_import.jl"); @ensure_import LiveServer; LiveServer.serve(dir="docs/build")'

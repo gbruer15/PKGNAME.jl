@@ -1,2 +1,2 @@
 
-@assert true
+@assert greeting("hi") == "Hello hi"

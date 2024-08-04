@@ -1,3 +1,7 @@
+
+"""
+This module provides the [`greeting`](@ref) function for generating greetings.
+"""
 module PKGNAME
 
 include("pkg_stuff.jl")
