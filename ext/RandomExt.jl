@@ -5,7 +5,7 @@ using PKGNAME: PKGNAME
 using Random
 
 """
-	greeting()
+    greeting()
 
 Call [`PKGNAME.greeting`](@ref) with a random name.
 """

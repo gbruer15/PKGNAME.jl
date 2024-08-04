@@ -8,5 +8,5 @@ using PKGNAME
 # Then, we run the greeting function for different names, which are numeric in this case.
 names = rand(10)
 for name in names
-	println(greeting(name))
+    println(greeting(name))
 end
