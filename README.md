@@ -5,6 +5,9 @@
 [![Coverage](https://gbruer15.github.io/PKGNAME.jl/coverage/badge.svg)](https://gbruer15.github.io/PKGNAME.jl/coverage/)
 [![Aqua](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl)
 
+## Documentation
+
+[Package documentation is here](https://gbruer15.github.io/PKGNAME.jl)
 
 ## Repository Structure[^1]
 

@@ -21,7 +21,7 @@ function process_coverage_badge(badge_filename, coverage_filename, folders...; t
         color = "red"
     end
 
-    percentage = round(Int, proportion * 100)
+    percentage = trunc(Int, proportion * 100)
     url = "https://img.shields.io/badge/$title-$percentage%25-$color"
     download(url, badge_filename)
     return coverage
