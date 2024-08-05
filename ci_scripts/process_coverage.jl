@@ -1,7 +1,8 @@
 """
 Coverage Report Generator
 
-This script processes coverage data for specified folders and generates an LCOV report.
+This script processes coverage data for specified folders and
+generates (or appends to) an LCOV report.
 
 Usage:
     julia process_coverage.jl <output_file> <folder1> [<folder2> ...]
@@ -21,7 +22,7 @@ Example:
     julia process_coverage.jl coverage.info src test
 
 Output:
-    - Generates an LCOV file at the specified output path.
+    - Generates or appends to an LCOV file at the specified output path.
     - Prints a summary of coverage to the console.
 """
 
@@ -29,7 +30,18 @@ include("ensure_import.jl")
 @ensure_using CoverageTools
 
 outputfilename = ARGS[1]
-coverage = vcat([process_folder(f) for f in ARGS[2:end]]...)
+folders = ARGS[2:end]
+if isfile(outputfilename)
+    orig_coverage = LCOV.readfile(outputfilename)
+else
+    orig_coverage = Vector{FileCoverage}()
+end
+coverage = vcat(orig_coverage, [process_folder(f) for f in folders]...)
+for c in coverage
+    if all(isnothing.(c.coverage))
+        c.coverage .= 0
+    end
+end
 LCOV.writefile(outputfilename, coverage)
 
 covered_lines, total_lines = get_summary(coverage)

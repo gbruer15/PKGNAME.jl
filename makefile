@@ -30,10 +30,11 @@ autoformat:
 
 doc: docsetup
 	rm -rf docs/stage docs/build
-	$(DOC_PREFIX) julia --project=docs  --code-coverage=@ --code-coverage=coverage-lcov.info docs/make.jl
-	-touch src/dummy.cov -d "19730101" && $(DOC_PREFIX) $(MAKE) coverage-lcov \
+	$(MAKE) clean_coverage
+	$(DOC_PREFIX) julia --project=docs  --code-coverage=@ docs/make.jl
+	- julia ci_scripts/process_coverage.jl coverage-lcov.info ./src ./test ./docs ./examples ./ext \
+	&& $(DOC_PREFIX) $(MAKE) coverage-lcov \
 	&& mkdir -p docs/build/coverage && cp -r coverage-lcov docs/build/coverage/site
-	rm -f src/dummy.cov
 
 docview:
 	julia -e 'include("ci_scripts/ensure_import.jl"); @ensure_import LiveServer; LiveServer.serve(dir="docs/build")'
