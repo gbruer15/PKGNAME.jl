@@ -2,6 +2,7 @@
 
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://gbruer15.github.io/PKGNAME.jl)
 [![Build Status](https://github.com/gbruer15/PKGNAME.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/gbruer15/PKGNAME.jl/actions/workflows/CI.yml?query=branch%3Amain)
+[![Coverage](https://gbruer15.github.io/PKGNAME.jl/coverage/badge.svg)](https://gbruer15.github.io/PKGNAME.jl/coverage/)
 [![Aqua](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl)
 
 

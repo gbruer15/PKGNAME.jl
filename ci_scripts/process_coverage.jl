@@ -34,47 +34,56 @@ Output:
 include("ensure_import.jl")
 @ensure_using CoverageTools
 
-mark_uncovered = (ARGS[1] == "--")
-if mark_uncovered
-    outputfilename = ARGS[2]
-    folders = ARGS[3:end]
-else
-    outputfilename = ARGS[1]
-    folders = ARGS[2:end]
-end
-
-# Read original file.
-if isfile(outputfilename)
-    coverage = LCOV.readfile(outputfilename)
-else
-    coverage = Vector{FileCoverage}()
-end
-
-# Append new coverage information.
-for f in folders
-    if isfile(f)
-        push!(coverage, process_file(f))
+function process_coverage(output_filename, folders...; mark_uncovered=false)
+    # Read original file.
+    if isfile(output_filename)
+        coverage = LCOV.readfile(output_filename)
     else
-        append!(coverage, process_folder(f))
+        coverage = Vector{FileCoverage}()
     end
-end
 
-coverage = merge_coverage_counts(coverage)
-
-if mark_uncovered
-    # Mark any files that weren't run as uncovered.
-    for c in coverage
-        if all(isnothing.(c.coverage))
-            @show "Marking $c as uncovered"
-            c.coverage .= 0
+    # Append new coverage information.
+    for f in folders
+        if isfile(f)
+            push!(coverage, process_file(f))
+        else
+            append!(coverage, process_folder(f))
         end
     end
+
+    coverage = merge_coverage_counts(coverage)
+
+    if mark_uncovered
+        # Mark any files that weren't run as uncovered.
+        for c in coverage
+            if all(isnothing.(c.coverage))
+                @show "Marking $c as uncovered"
+                c.coverage .= 0
+            end
+        end
+    end
+
+    # Write to output file.
+    LCOV.writefile(output_filename, coverage)
+    return coverage
 end
 
-# Write to output file.
-LCOV.writefile(outputfilename, coverage)
+if abspath(PROGRAM_FILE) == @__FILE__
+    # Parse ARGS.
+    mark_uncovered = (ARGS[1] == "--")
+    if mark_uncovered
+        output_filename = ARGS[2]
+        folders = ARGS[3:end]
+    else
+        output_filename = ARGS[1]
+        folders = ARGS[2:end]
+    end
 
-# Print summary.
-covered_lines, total_lines = get_summary(coverage)
-println("Covered lines: ", covered_lines)
-println("  Total lines: ", total_lines)
+    # Process coverage files.
+    coverage = process_coverage(output_filename, folders...; mark_uncovered)
+
+    # Print summary.
+    covered_lines, total_lines = get_summary(coverage)
+    println("Covered lines: ", covered_lines)
+    println("  Total lines: ", total_lines)
+end

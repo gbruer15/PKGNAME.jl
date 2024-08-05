@@ -34,7 +34,7 @@ doc: docsetup
 	$(MAKE) clean_coverage
 	- mv coverage-lcov.info.backup coverage-lcov.info
 	$(DOC_PREFIX) julia --project=docs  --code-coverage=@ docs/make.jl
-	- julia ci_scripts/process_coverage.jl -- coverage-lcov.info ./src ./test ./docs/*.jl ./docs/src ./examples ./ext \
+	- julia ci_scripts/process_coverage_badge.jl docs/build/coverage/badge.svg coverage-lcov.info ./src ./test ./docs/*.jl ./docs/src ./examples ./ext \
 	&& $(DOC_PREFIX) $(MAKE) coverage-lcov \
 	&& mkdir -p docs/build/coverage && cp -r coverage-lcov docs/build/coverage/site
 
