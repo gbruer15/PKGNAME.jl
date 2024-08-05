@@ -11,6 +11,8 @@ ts = @testset ReportingTestSet "" begin
         Aqua.test_ambiguities(PKGNAME)
     end
 
+    include("test_pkg_stuff.jl")
+
     # Set metadata for doctests.
     DocMeta.setdocmeta!(PKGNAME, :DocTestSetup, :(using PKGNAME, Test); recursive=true)
     if PKGNAME.HAS_NATIVE_EXTENSIONS

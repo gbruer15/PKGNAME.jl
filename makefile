@@ -30,9 +30,11 @@ autoformat:
 
 doc: docsetup
 	rm -rf docs/stage docs/build
+	- mv coverage-lcov.info coverage-lcov.info.backup
 	$(MAKE) clean_coverage
+	- mv coverage-lcov.info.backup coverage-lcov.info
 	$(DOC_PREFIX) julia --project=docs  --code-coverage=@ docs/make.jl
-	- julia ci_scripts/process_coverage.jl coverage-lcov.info ./src ./test ./docs ./examples ./ext \
+	- julia ci_scripts/process_coverage.jl -- coverage-lcov.info ./src ./test ./docs/*.jl ./docs/src ./examples ./ext \
 	&& $(DOC_PREFIX) $(MAKE) coverage-lcov \
 	&& mkdir -p docs/build/coverage && cp -r coverage-lcov docs/build/coverage/site
 
@@ -45,7 +47,7 @@ docs/Manifest.toml: docs/Project.toml Project.toml
 	julia --project=docs -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
 
 coverage-lcov.info: */*.cov
-	julia ci_scripts/process_coverage.jl "$@" ./src ./test ./docs ./examples ./ext
+	julia ci_scripts/process_coverage.jl "$@" ./src ./test ./docs/*.jl ./docs/src ./examples ./ext
 
 coverage-lcov: coverage-lcov.info
 	rm -rf $@
