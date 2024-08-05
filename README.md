@@ -1,17 +1,12 @@
 # PKGNAME
 
-| **Documentation**    | [![dev][docs-latest-img]][docs-latest-url]       |
+| **Documentation**    | [<img src="https://img.shields.io/badge/docs-latest-blue.svg" alt = "doc badge" height="30">][docs-latest-url] |
 |----------------------|--------------------------------------------------|
-| **CI tests**         | [![ci tests][ci-tests-img]][ci-tests-url]        |
-| **Code Coverage**    | [![codecov][codecov-img]][codecov-url]           |
+| **CI tests**         | [<img src="https://github.com/gbruer15/PKGNAME.jl/actions/workflows/CI.yml/badge.svg?branch=main" alt = "CI badge" height="30">][ci-tests-url] |
+| **Code Coverage**    | [<img src="https://gbruer15.github.io/PKGNAME.jl/coverage/badge.svg" alt = "coverage badge" height="30">][codecov-url] |
 
-[docs-latest-img]: https://img.shields.io/badge/docs-latest-blue.svg
 [docs-latest-url]: https://gbruer15.github.io/PKGNAME.jl
-
-[ci-tests-img]: https://github.com/gbruer15/PKGNAME.jl/actions/workflows/CI.yml/badge.svg?branch=main
 [ci-tests-url]: https://github.com/gbruer15/PKGNAME.jl/actions/workflows/CI.yml?query=branch%3Amain
-
-[codecov-img]: https://gbruer15.github.io/PKGNAME.jl/coverage/badge.svg
 [codecov-url]: https://gbruer15.github.io/PKGNAME.jl/coverage/
 
 ## Documentation
