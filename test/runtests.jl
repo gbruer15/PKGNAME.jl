@@ -4,6 +4,7 @@ using Test
 using TestReports
 using Aqua
 using Documenter
+using Random
 
 ts = @testset ReportingTestSet "" begin
     @testset "Code quality (Aqua.jl)" begin
@@ -12,7 +13,9 @@ ts = @testset ReportingTestSet "" begin
     end
 
     DocMeta.setdocmeta!(PKGNAME, :DocTestSetup, :(using PKGNAME, Test); recursive=false)
-    DocMeta.setdocmeta!(PKGNAME.RandomExt, :DocTestSetup, :(using PKGNAME, Random, Test); recursive=true)
+    DocMeta.setdocmeta!(
+        PKGNAME.RandomExt, :DocTestSetup, :(using PKGNAME, Random, Test); recursive=true
+    )
     doctest(PKGNAME; manual=true)
 
     examples_dir = joinpath(@__DIR__, "..", "examples")

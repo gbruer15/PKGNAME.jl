@@ -89,7 +89,9 @@ for (ex, pth) in examples
 end
 
 DocMeta.setdocmeta!(PKGNAME, :DocTestSetup, :(using PKGNAME, Test); recursive=false)
-DocMeta.setdocmeta!(PKGNAME.RandomExt, :DocTestSetup, :(using PKGNAME, Random, Test); recursive=true)
+DocMeta.setdocmeta!(
+    PKGNAME.RandomExt, :DocTestSetup, :(using PKGNAME, Random, Test); recursive=true
+)
 makedocs(;
     modules=[PKGNAME, PKGNAME.RandomExt],
     authors="Grant Bruer gbruer15@gmail.com and contributors",
