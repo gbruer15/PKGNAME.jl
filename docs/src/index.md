@@ -18,6 +18,10 @@ Modules = [PKGNAME]
 
 # Extensions
 
+```@index
+Modules = [PKGNAME.get_extension(PKGNAME, :RandomExt)]
+```
+
 ```@autodocs
-Modules = [PKGNAME.RandomExt]
+Modules = [PKGNAME.get_extension(PKGNAME, :RandomExt)]
 ```

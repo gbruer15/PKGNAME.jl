@@ -106,7 +106,7 @@ if PKGNAME.HAS_NATIVE_EXTENSIONS
     doctest(PKGNAME.get_extension(PKGNAME, :RandomExt); manual=true)
 end
 makedocs(;
-    modules=[PKGNAME, PKGNAME.RandomExt],
+    modules=[PKGNAME, PKGNAME.get_extension(PKGNAME, :RandomExt)],
     authors="Grant Bruer gbruer15@gmail.com and contributors",
     sitename="PKGNAME.jl",
     source=DOC_STAGE,

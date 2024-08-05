@@ -10,3 +10,7 @@ names = rand(10)
 for name in names
     println(greeting(name))
 end
+
+# It's even easier with the Random extension.
+using Random
+println(greeting())
