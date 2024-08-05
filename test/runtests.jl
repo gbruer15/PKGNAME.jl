@@ -4,7 +4,6 @@ using Test
 using TestReports
 using Aqua
 using Documenter
-using Random
 
 ts = @testset ReportingTestSet "" begin
     @testset "Code quality (Aqua.jl)" begin
@@ -12,12 +11,25 @@ ts = @testset ReportingTestSet "" begin
         Aqua.test_ambiguities(PKGNAME)
     end
 
-    DocMeta.setdocmeta!(PKGNAME, :DocTestSetup, :(using PKGNAME, Test); recursive=false)
-    DocMeta.setdocmeta!(
-        PKGNAME.RandomExt, :DocTestSetup, :(using PKGNAME, Random, Test); recursive=true
-    )
-    doctest(PKGNAME; manual=true)
+    # Set metadata for doctests.
+    DocMeta.setdocmeta!(PKGNAME, :DocTestSetup, :(using PKGNAME, Test); recursive=true)
+    if PKGNAME.HAS_NATIVE_EXTENSIONS
+        using Random
+        DocMeta.setdocmeta!(
+            PKGNAME.get_extension(PKGNAME, :RandomExt),
+            :DocTestSetup,
+            :(using PKGNAME, Test);
+            recursive=true,
+        )
+    end
 
+    # Run doctests.
+    doctest(PKGNAME; manual=true)
+    if PKGNAME.HAS_NATIVE_EXTENSIONS
+        doctest(PKGNAME.get_extension(PKGNAME, :RandomExt); manual=true)
+    end
+
+    # Run examples.
     examples_dir = joinpath(@__DIR__, "..", "examples")
     for example in readdir(examples_dir)
         example_path = joinpath(examples_dir, example)

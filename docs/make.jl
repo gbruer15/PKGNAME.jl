@@ -88,10 +88,23 @@ for (ex, pth) in examples
     end
 end
 
-DocMeta.setdocmeta!(PKGNAME, :DocTestSetup, :(using PKGNAME, Test); recursive=false)
-DocMeta.setdocmeta!(
-    PKGNAME.RandomExt, :DocTestSetup, :(using PKGNAME, Random, Test); recursive=true
-)
+# Set metadata for doctests.
+DocMeta.setdocmeta!(PKGNAME, :DocTestSetup, :(using PKGNAME, Test); recursive=true)
+if PKGNAME.HAS_NATIVE_EXTENSIONS
+    using Random
+    DocMeta.setdocmeta!(
+        PKGNAME.get_extension(PKGNAME, :RandomExt),
+        :DocTestSetup,
+        :(using PKGNAME, Test);
+        recursive=true,
+    )
+end
+
+# Run doctests.
+doctest(PKGNAME; manual=true)
+if PKGNAME.HAS_NATIVE_EXTENSIONS
+    doctest(PKGNAME.get_extension(PKGNAME, :RandomExt); manual=true)
+end
 makedocs(;
     modules=[PKGNAME, PKGNAME.RandomExt],
     authors="Grant Bruer gbruer15@gmail.com and contributors",
