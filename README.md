@@ -1,9 +1,18 @@
 # PKGNAME
 
-[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://gbruer15.github.io/PKGNAME.jl)
-[![Build Status](https://github.com/gbruer15/PKGNAME.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/gbruer15/PKGNAME.jl/actions/workflows/CI.yml?query=branch%3Amain)
-[![Coverage](https://gbruer15.github.io/PKGNAME.jl/coverage/badge.svg)](https://gbruer15.github.io/PKGNAME.jl/coverage/)
-[![Aqua](https://raw.githubusercontent.com/JuliaTesting/Aqua.jl/master/badge.svg)](https://github.com/JuliaTesting/Aqua.jl)
+| **Documentation**    | [![dev][docs-latest-img]][docs-latest-url]       |
+|----------------------|--------------------------------------------------|
+| **CI tests**         | [![ci tests][ci-tests-img]][ci-tests-url]        |
+| **Code Coverage**    | [![codecov][codecov-img]][codecov-url]           |
+
+[docs-latest-img]: https://img.shields.io/badge/docs-latest-blue.svg
+[docs-latest-url]: https://gbruer15.github.io/PKGNAME.jl
+
+[ci-tests-img]: https://github.com/gbruer15/PKGNAME.jl/actions/workflows/CI.yml/badge.svg?branch=main
+[ci-tests-url]: https://github.com/gbruer15/PKGNAME.jl/actions/workflows/CI.yml?query=branch%3Amain
+
+[codecov-img]: https://gbruer15.github.io/PKGNAME.jl/coverage/badge.svg
+[codecov-url]: https://gbruer15.github.io/PKGNAME.jl/coverage/
 
 ## Documentation
 
