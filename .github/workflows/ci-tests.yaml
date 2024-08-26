@@ -1,0 +1,72 @@
+name: CI Tests
+on:
+  pull_request:
+    types: [ready_for_review, synchronize]
+  push:
+    branches:
+    - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    permissions:
+      actions: write
+      contents: write
+      pull-requests: write
+      checks: write
+    strategy:
+      fail-fast: false
+      matrix:
+        version:
+          - '1.7'
+          - '1.8'
+          - '1.9'
+          - '1'
+        os:
+          - ubuntu-latest
+        arch:
+          - x64
+    steps:
+      - name: Add GLMakie/XFVB dependencies
+        run: sudo apt-get update && sudo apt-get install -y xorg-dev mesa-utils xvfb libgl1 freeglut3-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev libcairo2-dev libfreetype6-dev libffi-dev libjpeg-dev libpng-dev libz-dev
+      - run: |
+          JOB_NAME="${{ join(matrix.*, '-') }}"
+          echo $JOB_NAME
+          echo "JOB_NAME=$JOB_NAME" >> $GITHUB_ENV
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: ${{ matrix.version }}
+          arch: ${{ matrix.arch }}
+      - uses: julia-actions/cache@v2
+      - name: Clean
+        run: |
+          make clean_coverage
+          make clean_testreport
+      - uses: julia-actions/julia-buildpkg@v1
+      - uses: julia-actions/julia-runtest@v1
+        with:
+          prefix: xvfb-run -a
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: success() || failure()
+        with:
+          name: report-${{ env.JOB_NAME }}.xml
+          path: "report.xml"
+      - name: Process coverage
+        if: success() || failure()
+        run: make coverage-lcov.info
+      - name: Upload coverage results
+        uses: actions/upload-artifact@v4
+        if: success() || failure()
+        with:
+          name: coverage-${{ env.JOB_NAME }}.info
+          path: "coverage-lcov.info"

@@ -1,0 +1,75 @@
+name: Docs
+on:
+  pull_request:
+    types: [ready_for_review, synchronize]
+  push:
+    branches:
+    - main
+  workflow_run:
+    workflows: [CI Tests]
+    types: [completed]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  docs-build:
+    name: Build documentation
+    runs-on: ubuntu-latest
+    permissions: write-all
+    if: ${{ github.event.workflow_run.conclusion == 'success' && !cancelled() }}
+    steps:
+      - name: Add GLMakie/XFVB dependencies
+        run: sudo apt-get update && sudo apt-get install -y xorg-dev mesa-utils xvfb libgl1 freeglut3-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev libcairo2-dev libfreetype6-dev libffi-dev libjpeg-dev libpng-dev libz-dev
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: '1'
+      - uses: julia-actions/cache@v2
+      - name: Setup LCOV
+        run: (command -V genhtml || sudo apt-get -y install lcov) && genhtml --version
+        continue-on-error: true
+      - name: Configure doc environment
+        run: make docsetup
+      - uses: julia-actions/julia-buildpkg@v1
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          pattern: 'coverage-*.info'
+          path: coverage
+      - name: Display structure of downloaded files
+        run: ls -R
+      - name: Combine LCOV files and generate coverage html
+        continue-on-error: true
+        run: |
+          lcov $(find coverage -name 'coverage-lcov.info' -printf '-a %p ') -o coverage-lcov.info
+          test -f coverage-lcov.info && make coverage-lcov -o '*/*.cov'
+      - name: Display structure of whatever just happened
+        run: ls -R
+      - name: Build docs
+        run: make DOC_PREFIX='xvfb-run -a' doc -o '*/*.cov'
+      - name: Display structure of docs
+        run: ls -R docs
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload report Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./docs/build"
+  docs-deploy:
+    name: Deploy documentation
+    if: github.ref == 'refs/heads/main'
+    needs: docs-build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    permissions: write-all
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        continue-on-error: true
