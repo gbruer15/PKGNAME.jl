@@ -9,6 +9,8 @@
 [ci-tests-url]: https://github.com/gbruer15/PKGNAME.jl/actions/workflows/CI.yml?query=branch%3Amain
 [codecov-url]: https://gbruer15.github.io/PKGNAME.jl/coverage/
 
+This package exists as a template for quickly getting a Julia package set up with continuous integration and documentation support.
+
 ## Documentation
 
 [Package documentation is here](https://gbruer15.github.io/PKGNAME.jl)
