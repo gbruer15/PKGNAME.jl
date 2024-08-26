@@ -12,7 +12,12 @@ jobs:
   docs-build:
     name: Build documentation
     runs-on: ubuntu-latest
-    permissions: write-all
+    permissions:
+      contents: read
+      pages: write
+      actions: read
+      id-token: write
+      checks: write
     if: ${{ github.event.workflow_run.conclusion == 'success' && !cancelled() }}
     steps:
       - name: Add GLMakie/XFVB dependencies
@@ -35,6 +40,7 @@ jobs:
         with:
           pattern: 'coverage-*.info'
           path: coverage
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Display structure of downloaded files
         run: ls -R
       - name: Combine LCOV files and generate coverage html
