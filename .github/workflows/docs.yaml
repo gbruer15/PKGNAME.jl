@@ -38,6 +38,7 @@ jobs:
       - uses: actions/download-artifact@v4
         continue-on-error: true
         with:
+          pattern: 'coverage-*.info'
           path: coverage
       - name: Display structure of downloaded files
         run: ls -R

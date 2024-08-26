@@ -55,13 +55,12 @@ jobs:
       - uses: julia-actions/julia-runtest@v1
         with:
           prefix: xvfb-run -a
-      - name: Test Report
-        uses: dorny/test-reporter@v1
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
         if: success() || failure()
         with:
-          name: Test results ${{ env.JOB_NAME }}
-          path: report.xml
-          reporter: java-junit
+          name: report-${{ env.JOB_NAME }}.xml
+          path: "report.xml"
       - name: Process coverage
         if: success() || failure()
         run: make coverage-lcov.info
