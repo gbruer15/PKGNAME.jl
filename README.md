@@ -2,7 +2,7 @@
 
 | [**Documentation**][docs-latest-url]    | [<img src="https://img.shields.io/badge/docs-latest-blue.svg" alt = "doc badge" height="30">][docs-latest-url] [<img src="https://github.com/gbruer15/PKGNAME.jl/actions/workflows/docs.yaml/badge.svg?branch=main" alt = "doc badge" height="30">][docs-build-url] |
 |----------------------|--------------------------------------------------|
-| [**CI tests**][ci-tests-url]]        | [<img src="https://github.com/gbruer15/PKGNAME.jl/actions/workflows/ci-tests.yaml/badge.svg?branch=main" alt = "CI badge" height="30">][ci-tests-url] |
+| [**CI tests**][ci-tests-url]        | [<img src="https://github.com/gbruer15/PKGNAME.jl/actions/workflows/ci-tests.yaml/badge.svg?branch=main" alt = "CI badge" height="30">][ci-tests-url] |
 | [**Code Coverage**][codecov-url]    | [<img src="https://gbruer15.github.io/PKGNAME.jl/coverage/badge.svg" alt = "coverage badge" height="30">][codecov-url] |
 
 [docs-latest-url]: https://gbruer15.github.io/PKGNAME.jl
