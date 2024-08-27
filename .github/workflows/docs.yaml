@@ -40,7 +40,7 @@ jobs:
         with:
           pattern: 'coverage-*.info'
           path: coverage
-          run-id: ${{ github.event.workflow_run.payload.workflow_run.id }}
+          run-id: ${{ github.event.workflow_run.id }}
       - name: Display structure of downloaded files
         run: ls -R
       - name: Combine LCOV files and generate coverage html
