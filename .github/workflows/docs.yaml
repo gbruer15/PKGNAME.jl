@@ -40,6 +40,7 @@ jobs:
         with:
           path: coverage
           run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Display structure of downloaded files
         run: ls -R
       - name: Combine LCOV files and generate coverage html
