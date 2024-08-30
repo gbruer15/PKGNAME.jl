@@ -57,6 +57,7 @@ jobs:
       run: make autoformat
     - name: Create pull request with changes
       run: |
+        gh auth status
         if git diff --quiet ; then
           echo "No formatting changes were made"
           if q=`gh pr view --json state --template '{{.state}}'` && test "$q" = "OPEN"; then
