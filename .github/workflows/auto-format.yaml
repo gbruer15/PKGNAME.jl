@@ -58,7 +58,7 @@ jobs:
     - name: Create pull request with changes
       run: |
         gh auth status
-        gh auth refresh --reset-scopes 
+        gh auth refresh --reset-scopes -h github.com
         gh auth status
         if git diff --quiet ; then
           echo "No formatting changes were made"
