@@ -71,6 +71,7 @@ jobs:
             if test "$q" = "OPEN"; then
               gh pr view
             elif gh pr reopen "${{ env.formatter_branch }}"; then
+              ;
             else
               gh pr create -B "${{ env.base_branch }}" --fill
             fi
