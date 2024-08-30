@@ -70,10 +70,8 @@ jobs:
           if q=`gh pr view --json state --template '{{.state}}'` && test "$q" != "MERGED"; then
             if test "$q" = "OPEN"; then
               gh pr view
-            elif gh pr reopen "${{ env.formatter_branch }}"; then
-              ;
             else
-              gh pr create -B "${{ env.base_branch }}" --fill
+              gh pr reopen "${{ env.formatter_branch }}" || gh pr create -B "${{ env.base_branch }}" --fill
             fi
           else
             gh pr create -B "${{ env.base_branch }}" --fill
