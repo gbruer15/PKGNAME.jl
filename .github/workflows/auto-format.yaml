@@ -24,7 +24,6 @@ jobs:
     name: Run JuliaFormatter and create pull request
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'pull_request' || !github.event.pull_request.isDraft}}
-    permissions: write-all
     steps:
     - name: Set inputs for push or pull request event
       if: github.event_name != 'workflow_dispatch'
@@ -57,7 +56,6 @@ jobs:
       run: make autoformat
     - name: Create pull request with changes
       run: |
-        gh auth status
         if git diff --quiet ; then
           echo "No formatting changes were made"
           if q=`gh pr view --json state --template '{{.state}}'` && test "$q" = "OPEN"; then
@@ -81,4 +79,4 @@ jobs:
           exit 1
         fi
       env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
