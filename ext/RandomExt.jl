@@ -19,9 +19,7 @@ julia> @test true;
 
 """
 PKGNAME.greeting() = PKGNAME.greeting(
-    
-    rand(5)
-
+    rand(5),
 )
 
 end
