@@ -5,7 +5,7 @@ on:
     types: [completed]
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event.workflow_run.head_commit.id }}
   cancel-in-progress: true
 
 jobs:
@@ -20,6 +20,8 @@ jobs:
       checks: write
     if: ${{ github.event.workflow_run.conclusion == 'success' && !cancelled() }}
     steps:
+      - name: Check stuff
+        run: echo ${{ github.event.workflow_run.head_commit.id }}
       - name: Add GLMakie/XFVB dependencies
         run: sudo apt-get update && sudo apt-get install -y xorg-dev mesa-utils xvfb libgl1 freeglut3-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libxext-dev libcairo2-dev libfreetype6-dev libffi-dev libjpeg-dev libpng-dev libz-dev
       - uses: actions/checkout@v4
