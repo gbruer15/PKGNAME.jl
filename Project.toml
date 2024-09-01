@@ -1,7 +1,7 @@
 name = "PKGNAME"
 uuid = "00000000-0000-0000-0000-123456789010"
 authors = ["Grant Bruer gbruer15@gmail.com and contributors"]
-version = "1.0.0-DEV"
+version = "0.0.0"
 
 [deps]
 PackageExtensionCompat = "65ce6f38-6b18-4e1d-a461-8949797d7930"
