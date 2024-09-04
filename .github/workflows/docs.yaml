@@ -28,7 +28,6 @@ jobs:
       if: inputs.target_ref
       run: |
         echo 'target_ref=${{ inputs.target_ref }}' >> $GITHUB_ENV
-        echo 'formatter_branch=auto-formatter/${{ inputs.target_ref }}' >> $GITHUB_ENV
   docs-build:
     name: Build documentation
     runs-on: ubuntu-latest

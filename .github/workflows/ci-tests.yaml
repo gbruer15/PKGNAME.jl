@@ -90,3 +90,17 @@ jobs:
         with:
           name: coverage-${{ env.JOB_NAME }}.info
           path: "coverage-lcov.info"
+  report:
+    permissions:
+      contents: read
+      actions: read
+      checks: write
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: dorny/test-reporter@v1
+        with:
+          artifact: /report-(.*).xml/
+          name: Test results $1
+          path: '*.xml'
+          reporter: java-junit
