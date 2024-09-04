@@ -1,7 +1,8 @@
 # PKGNAME
 
+|  |     |
+|--|:---:|
 | [**Documentation**][docs-latest-url]    | [<img src="https://img.shields.io/badge/docs-latest-blue.svg" alt = "doc badge" height="30">][docs-latest-url] |
-|----------------------|--------------------------------------------------|
 | [**CI tests**][checks-url]        | [<img src="https://github.com/gbruer15/PKGNAME.jl/actions/workflows/checks.yaml/badge.svg?branch=main" alt = "CI badge" height="30">][checks-url] |
 | [**Code Coverage**][codecov-url]    | [<img src="https://gbruer15.github.io/PKGNAME.jl/coverage/badge.svg" alt = "coverage badge" height="30">][codecov-url] |
 
