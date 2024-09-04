@@ -1,12 +1,10 @@
 name: Auto-format
 on:
-  pull_request:
-    types: [ready_for_review, synchronize]
-    branches:
-      - main
-  push:
-    branches:
-      - main
+  workflow_call:
+    inputs:
+      base_branch:
+        required: false
+        type: string
   workflow_dispatch:
     inputs:
       base_branch:
@@ -15,23 +13,18 @@ on:
         required: false
         type: string
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
   auto-format:
     name: Run JuliaFormatter and create pull request
     runs-on: ubuntu-latest
-    if: ${{ github.event_name != 'pull_request' || !github.event.pull_request.isDraft}}
     steps:
-    - name: Set inputs for push or pull request event
-      if: github.event_name != 'workflow_dispatch'
+    - name: Set base branch automatically
+      if: inputs.base_branch == ''
       run: |
         echo "base_branch=${{ github.head_ref || github.ref_name }}" >> $GITHUB_ENV
         echo 'formatter_branch=auto-formatter/${{ github.head_ref || github.ref_name }}' >> $GITHUB_ENV
-    - name: Set inputs for workflow dispatch event
-      if: github.event_name == 'workflow_dispatch'
+    - name: Read base branch from inputs
+      if: inputs.base_branch
       run: |
         echo 'base_branch=${{ inputs.base_branch }}' >> $GITHUB_ENV
         echo 'formatter_branch=auto-formatter/${{ inputs.base_branch }}' >> $GITHUB_ENV
