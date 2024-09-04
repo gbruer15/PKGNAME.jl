@@ -1,19 +1,38 @@
 name: CI Tests
 on:
-  pull_request:
-    types: [ready_for_review, synchronize]
-  push:
-    branches:
-    - main
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  workflow_call:
+    inputs:
+      target_ref:
+        required: false
+        type: string
+  workflow_dispatch:
+    inputs:
+      target_ref:
+        description: 'Commit or branch to run tests'
+        default: 'main'
+        required: false
+        type: string
 
 jobs:
+  read-params:
+    name: Get branch or commit ID
+    runs-on: ubuntu-latest
+    outputs:
+      target_ref: ${{ env.target_ref }}
+    steps:
+    - name: Set target ref automatically
+      if: inputs.target_ref == ''
+      run: |
+        echo "target_ref=${{ github.head_ref || github.ref_name }}" >> $GITHUB_ENV
+    - name: Read target ref from inputs
+      if: inputs.target_ref
+      run: |
+        echo 'target_ref=${{ inputs.target_ref }}' >> $GITHUB_ENV
+        echo 'formatter_branch=auto-formatter/${{ inputs.target_ref }}' >> $GITHUB_ENV
   test:
     name: Julia ${{ matrix.version }} - ${{ matrix.os }} - ${{ matrix.arch }} - ${{ github.event_name }}
     runs-on: ${{ matrix.os }}
+    needs: read-params
     timeout-minutes: 60
     permissions:
       actions: write
@@ -41,6 +60,7 @@ jobs:
           echo "JOB_NAME=$JOB_NAME" >> $GITHUB_ENV
       - uses: actions/checkout@v4
         with:
+          ref: ${{needs.read-params.outputs.target_ref }}
           submodules: recursive
       - uses: julia-actions/setup-julia@v2
         with:
