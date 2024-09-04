@@ -1,12 +1,12 @@
 # PKGNAME
 
-| [**Documentation**][docs-latest-url]    | [<img src="https://img.shields.io/badge/docs-latest-blue.svg" alt = "doc badge" height="30">][docs-latest-url] [<img src="https://github.com/gbruer15/PKGNAME.jl/actions/workflows/docs.yaml/badge.svg?branch=main" alt = "doc badge" height="30">][docs-build-url] |
+| [**Documentation**][docs-latest-url]    | [<img src="https://img.shields.io/badge/docs-latest-blue.svg" alt = "doc badge" height="30">][docs-latest-url] |
 |----------------------|--------------------------------------------------|
-| [**CI tests**][ci-tests-url]        | [<img src="https://github.com/gbruer15/PKGNAME.jl/actions/workflows/ci-tests.yaml/badge.svg?branch=main" alt = "CI badge" height="30">][ci-tests-url] |
+| [**CI tests**][checks-url]        | [<img src="https://github.com/gbruer15/PKGNAME.jl/actions/workflows/checks.yaml/badge.svg?branch=main" alt = "CI badge" height="30">][checks-url] |
 | [**Code Coverage**][codecov-url]    | [<img src="https://gbruer15.github.io/PKGNAME.jl/coverage/badge.svg" alt = "coverage badge" height="30">][codecov-url] |
 
 [docs-latest-url]: https://gbruer15.github.io/PKGNAME.jl
-[ci-tests-url]: https://github.com/gbruer15/PKGNAME.jl/actions/workflows/ci-tests.yaml?query=branch%3Amain
+[checks-url]: https://github.com/gbruer15/PKGNAME.jl/actions/workflows/checks.yaml?query=branch%3Amain
 [docs-build-url]: https://github.com/gbruer15/PKGNAME.jl/actions/workflows/docs.yaml?query=branch%3Amain
 [codecov-url]: https://gbruer15.github.io/PKGNAME.jl/coverage/
 
