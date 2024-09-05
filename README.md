@@ -100,15 +100,14 @@ Starts an interactive Julia REPL with the project environment, Revise, and TestE
 
 This repository uses GitHub Actions for continuous integration, compatibility checks, and automated tagging. The workflows are defined in [./.github/workflows](./.github/workflows). Here's a brief overview of each workflow:
 
-### CI
+### All CI
 
-The main continuous integration workflow that:
-- Runs tests on multiple Julia versions and operating systems
-- Generates code coverage reports
-- Runs the code formatter and creates a pull request if changes are needed
-- Builds and deploys the documentation
+The main continuous integration workflow that runs these sub-workflows:
+- Auto-format: Runs the code formatter and creates a pull request if changes are needed
+- CI Tests: Runs tests on multiple Julia versions and operating systems and generates code coverage reports
+- Build/Deploy Docs: Builds and deploys the documentation
 
-Triggers: Pull requests, pushes to main, and manual dispatch
+Triggers: Pull requests to main and pushes to main
 
 ### CompatHelper
 
