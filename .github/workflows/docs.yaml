@@ -1,4 +1,4 @@
-name: Docs
+name: Build/Deploy Docs
 on:
   workflow_call:
     inputs:
