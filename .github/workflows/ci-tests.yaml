@@ -95,6 +95,7 @@ jobs:
       contents: read
       actions: read
       checks: write
+    if: success() || failure()
     needs: test
     runs-on: ubuntu-latest
     steps:
