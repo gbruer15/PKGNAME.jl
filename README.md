@@ -11,7 +11,10 @@
 [docs-build-url]: https://github.com/gbruer15/PKGNAME.jl/actions/workflows/docs.yaml?query=branch%3Amain
 [codecov-url]: https://gbruer15.github.io/PKGNAME.jl/coverage/
 
-This package exists as a template for quickly getting a Julia package set up with continuous integration and documentation support. If you have suggestions for making this better, you are very welcome to make an issue or pull request to discuss it.
+This package exists as a template for quickly getting a Julia package set up with continuous integration and documentation support.
+If you have suggestions for making this better, you are very welcome to make an issue or pull request to discuss it.
+
+Some information on using this repo can be found in the [wiki](https://github.com/gbruer15/PKGNAME.jl/wiki).
 
 ## Repository Structure[^1]
 
